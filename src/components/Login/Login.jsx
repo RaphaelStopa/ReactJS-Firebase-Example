@@ -9,13 +9,19 @@ function Login() {
     const {login, currentUser} = useAuth();
     let navigate = useNavigate();
 
-    
+
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
-        await login(email, password)
-        navigate("/main")
+        try {
+            await login(email, password)
+            navigate("/main")
+        } catch (error) {
+            alert("Erro ao logar. Verifique os campos.")
+        }
+
         setLoading(false)
+
     }
 
 
@@ -30,20 +36,20 @@ function Login() {
             <div>
                 <label>Senha:</label>
                 <input placeholder='Senha' name="password" value={password} onChange={e => setPassword(e.target.value)} required></input>
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input placeholder='Email' name="email" value={email} onChange={e => setEmail(e.target.value)} required></input>
-                    </div>
-                    <div>
-                    <button disabled={loading} type='submit'>Logar</button>
-                    <button onClick={e => reset(e.target.value)}>Cancelar</button>
-                    </div>
-                    <div>Não tem uma conta?</div>
-                    <Link to={'/Register'}>Crie uma conta</Link>
+            </div>
+            <div>
+                <label>Email:</label>
+                <input placeholder='Email' name="email" value={email} onChange={e => setEmail(e.target.value)} required></input>
+            </div>
+            <div>
+                <button disabled={loading} type='submit'>Logar</button>
+                <button onClick={e => reset(e.target.value)}>Cancelar</button>
+            </div>
+            <div>Não tem uma conta?</div>
+            <Link to={'/Register'}>Crie uma conta</Link>
         </form>
     );
-  }
+}
 
-  export default Login;
+export default Login;
 

@@ -16,22 +16,28 @@ function Register() {
     const {signup, currentUser} = useAuth();
     const[db, setDB] = useState(StartFireBase());
 
-    
+
     async function handleSubmit(e){
         e.preventDefault()
 
         if(password !== confirmPassword) {
+            alert('Senha não bate')
             return setError('Senha não bate')
         }
-            setError("")
-            setLoading(true)
 
-            var uid;
+        if(password.length < 6) {
+            alert('Password precisa de mais caracteres')
+            return setError('Password precisa de mais caracteres')
+        }
+        setError("")
+        setLoading(true)
 
-           await signup(email, password).then(function (userCreds) {
+        var uid;
+
+        await signup(email, password).then(function (userCreds) {
             uid = userCreds.user.uid});
 
-            set(ref(db, 'user/'+ uid),
+        set(ref(db, 'user/'+ uid),
             {
                 FirstName: firstName,
                 LastName: lastName,
@@ -39,7 +45,7 @@ function Register() {
             })
             .then(()=>{alert('Contra criada.')})
             .catch((error)=>{alert("Erro: " + error)});
-    
+
         setLoading(false)
     }
 
@@ -58,36 +64,36 @@ function Register() {
             <div>
                 <label>Senha:</label>
                 <input placeholder='Senha' name="password" value={password} onChange={e => setPassword(e.target.value)} required></input>
-                </div>
-                <div>
+            </div>
+            <div>
                 <label>Confirme senha:</label>
                 <input placeholder='Confirme senha' name="confirmPassword" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required></input>
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input placeholder='Email' name="email" value={email} onChange={e => setEmail(e.target.value)} required></input>
-                    </div>
-                    <div>
+            </div>
+            <div>
+                <label>Email:</label>
+                <input placeholder='Email' name="email" value={email} onChange={e => setEmail(e.target.value)} required></input>
+            </div>
+            <div>
                 <label>Primeiro nome:</label>
                 <input placeholder='Primeiro nome' name="firstName" value={firstName} onChange={e => setFirstName(e.target.value)} required></input>
-                </div>
-                <div>
+            </div>
+            <div>
                 <label>Sobrenome:</label>
                 <input placeholder='Sobrenome' name="lastName" value={lastName} onChange={e => setLastName(e.target.value)} required></input>
-                </div>
-                <div>
+            </div>
+            <div>
                 <label>Data de nascimento:</label>
                 <input type="date"  name="DataDeNascimento" value={date} onChange={e => setDate(e.target.value)} required></input>
-                </div>
-                    <div><button disabled={loading} type='submit'>Cadrastar</button>
-                    <button onClick={e => reset(e.target.value)}>Cancelar</button>
-                    </div>
-                    <div>Já tem uma conta?</div>
-                    <Link to={'/'}>Acesse</Link>
+            </div>
+            <div><button disabled={loading} type='submit'>Cadrastar</button>
+                <button onClick={e => reset(e.target.value)}>Cancelar</button>
+            </div>
+            <div>Já tem uma conta?</div>
+            <Link to={'/'}>Acesse</Link>
         </form>
     );
 
-  }
+}
 
-  export default Register;
+export default Register;
 
